@@ -1,10 +1,52 @@
 package ru.courses;
 
+import lombok.*;
+import ru.courses.main.StudentRepository;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+@ToString
+@EqualsAndHashCode
 public class Student {
+
+    @Getter
+    @Setter
+    private String name;
+    private List<Integer> grades = new ArrayList<>();
+    private StudentRepository studentRepository;
+
+    public Student(String name, StudentRepository studentRepository) {
+        this.name = name;
+        this.studentRepository = studentRepository;
+    }
+
+    public List<Integer> getGrades() {
+        return new ArrayList<>(grades);
+    }
+
+    public void addGrade(int grade) {
+        if(studentRepository.checkGrade(grade)){
+            grades.add(grade);
+        }
+    }
+
+    public int rating() {
+        int sum = grades.stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+        return studentRepository.rating(sum);
+    }
+}
+//Предположим, что мы изменили класс Студента таким образом, что
+//проверка корректности добавляемой оценки выполняется им не самостоятельно, а с
+//помощью сервиса checkGrade,
+//который получает параметр grade
+//и возвращает true или false.
+//
+//Реализуйте заглушку сервиса и реализуйте тест на проверку того, что
+//правильные оценки попадают в список оценок, а неправильные нет.
+/*public class Student {
     private String name;
     private List<Integer> grades= new ArrayList<>();
 
@@ -61,4 +103,4 @@ public class Student {
     public String toString() {
         return "Student{" + "name=" + name + ", marks=" + grades + '}';
     }
-}
+}*/
