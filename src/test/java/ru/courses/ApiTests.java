@@ -244,9 +244,9 @@ public class ApiTests {
                 .contentType("application/json")
                 .body("""
                         {
-                        "id": 1,
+                        "id": 10,
                         "name": "Kevin",
-                        "marks": [5,5]
+                        "marks": [4]
                         }
                         """)
                 .when()
@@ -258,8 +258,36 @@ public class ApiTests {
                 .contentType("application/json")
                 .body("""
                         {
-                        "id": 2,
+                        "id": 50,
                         "name": "Emily",
+                        "marks": [5]
+                        }
+                        """)
+                .when()
+                .post("/student")
+                .then()
+                .statusCode(201);
+        RestAssured.given()
+                .baseUri("http://localhost:8080")
+                .contentType("application/json")
+                .body("""
+                        {
+                        "id": 1,
+                        "name": "John",
+                        "marks": [5,5,5,5,5,5,5]
+                        }
+                        """)
+                .when()
+                .post("/student")
+                .then()
+                .statusCode(201);
+        RestAssured.given()
+                .baseUri("http://localhost:8080")
+                .contentType("application/json")
+                .body("""
+                        {
+                        "id": 34,
+                        "name": "Lucky",
                         "marks": [5,5,5]
                         }
                         """)
@@ -273,14 +301,12 @@ public class ApiTests {
                 .get("/topStudent")
                 .then()
                 .statusCode(200)
-                .body("[0].name", Matchers.equalTo("Emily"));
-        RestAssured.given()
-                .baseUri("http://localhost:8080")
-                .pathParam("id", 2)
-                .when()
-                .delete("/student/{id}")
-                .then()
-                .statusCode(200);
+                .body("[0].name", Matchers.equalTo("John"));
+        List.of(10, 50, 1, 34).forEach(id ->
+                RestAssured.given()
+                        .pathParam("id", id)
+                        .delete("/student/{id}")
+        );
     }
 
     //12. get /topStudent код 200 и несколько студентов, если у них всех эта оценка максимальная
@@ -308,7 +334,7 @@ public class ApiTests {
                         {
                         "id": 2,
                         "name": "Emily",
-                        "marks": [5,5,5]
+                        "marks": [5,5,5,5]
                         }
                         """)
                 .when()
@@ -331,13 +357,27 @@ public class ApiTests {
                 .statusCode(201);
         RestAssured.given()
                 .baseUri("http://localhost:8080")
+                .contentType("application/json")
+                .body("""
+                        {
+                        "id": 4,
+                        "name": "Lucky",
+                        "marks": [5,5,5,5]
+                        }
+                        """)
+                .when()
+                .post("/student")
+                .then()
+                .statusCode(201);
+        RestAssured.given()
+                .baseUri("http://localhost:8080")
                 .when()
                 .get("/topStudent")
                 .then()
                 .statusCode(200)
                 .body("$", Matchers.hasSize(2))
-                .body("name", Matchers.hasItems("Kevin", "Emily"));
-        List.of(1, 2, 3).forEach(id ->
+                .body("name", Matchers.hasItems("Lucky", "Emily"));
+        List.of(1, 2, 3, 4).forEach(id ->
                 RestAssured.given()
                         .pathParam("id", id)
                         .delete("/student/{id}")
