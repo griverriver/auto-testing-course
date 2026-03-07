@@ -8,10 +8,17 @@ import java.util.List;
 
 @ToString
 @EqualsAndHashCode
+@Getter
+@Setter
 public class Student {
 
-    @Getter
-    @Setter
+
+    private Integer id;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String name;
     private List<Integer> grades = new ArrayList<>();
     private StudentRepository studentRepository;
@@ -19,6 +26,11 @@ public class Student {
     public Student(String name, StudentRepository studentRepository) {
         this.name = name;
         this.studentRepository = studentRepository;
+    }
+
+    public Student(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public List<Integer> getGrades() {
