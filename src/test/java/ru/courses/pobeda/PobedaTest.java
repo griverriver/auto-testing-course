@@ -16,6 +16,8 @@ public class PobedaTest {
     HomePage objHomePage;
     InfoPopUp objInfoPopUp;
     TicketSearch objTicketSearch;
+    BookingManagementPage objBookingManagementPage;
+    ViewOrderPage objViewOrderPage;
 
     @Before
     public void setUp() {
@@ -64,6 +66,32 @@ public class PobedaTest {
 
         String isRedOutline = objTicketSearch.checkRedOutline();
         Assert.assertEquals("true", isRedOutline);
+    }
+
+    @Test
+    public void bookingManagementTest() throws InterruptedException {
+        objBookingManagementPage = new BookingManagementPage(driver);
+        objViewOrderPage = new ViewOrderPage(driver);
+        objHomePage = new HomePage(driver);
+
+        objHomePage.scrollToManageMyBooking();
+        objHomePage.clickOnManageMyBooking();
+
+        Assert.assertEquals("Номер бронирования или билета", objBookingManagementPage.getTicketNumberText());
+        Assert.assertEquals("Фамилия клиента", objBookingManagementPage.getClientsLastNameText());
+        Assert.assertEquals("поиск", objBookingManagementPage.getSearchButtonText().toLowerCase());
+
+        objBookingManagementPage.enterTicketNumber("XXXXXX");
+        objBookingManagementPage.enterClientsLastName("Qwerty");
+        objBookingManagementPage.clickSearchButton();
+        Object[] windows = driver.getWindowHandles().toArray();
+        driver.switchTo().window((String) windows[1]);
+
+        objViewOrderPage.clickOnPrivacyPolicyCheckbox();
+        objViewOrderPage.clickOnFindOrderButton();
+        //время для прохождения капчи если она появляется
+        Thread.sleep(15000);
+        Assert.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
     }
 
     @After
