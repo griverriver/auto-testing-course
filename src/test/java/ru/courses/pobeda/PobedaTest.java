@@ -1,10 +1,10 @@
 package ru.courses.pobeda;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -19,7 +19,7 @@ public class PobedaTest {
     BookingManagementPage objBookingManagementPage;
     ViewOrderPage objViewOrderPage;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
         WebDriverManager.chromedriver().setup();
@@ -35,16 +35,16 @@ public class PobedaTest {
         objHomePage = new HomePage(driver);
         objInfoPopUp = new InfoPopUp(driver);
 
-        Assert.assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", objHomePage.getHomePageTitle());
+        Assertions.assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", objHomePage.getHomePageTitle());
 
-        Assert.assertTrue(objHomePage.isLogoDisplayed());
+        Assertions.assertTrue(objHomePage.isLogoDisplayed());
 
         objHomePage.openInfoPopUp();
 
         objInfoPopUp.waitForPopUp();
-        Assert.assertEquals("Подготовка к полёту", objInfoPopUp.getReadyToFlyText());
-        Assert.assertEquals("Полезная информация", objInfoPopUp.getUsefulInfoText());
-        Assert.assertEquals("О компании", objInfoPopUp.getAboutCompanyText());
+        Assertions.assertEquals("Подготовка к полёту", objInfoPopUp.getReadyToFlyText());
+        Assertions.assertEquals("Полезная информация", objInfoPopUp.getUsefulInfoText());
+        Assertions.assertEquals("О компании", objInfoPopUp.getAboutCompanyText());
     }
 
     @Test
@@ -53,11 +53,11 @@ public class PobedaTest {
 
         objTicketSearch.closeTicketOneRubPopUp();
         objTicketSearch.scrollToTicketSearch();
-        Assert.assertEquals("Поиск билета", objTicketSearch.getTicketSearchBlockText());
-        Assert.assertEquals("Откуда", objTicketSearch.getFromWhereText());
-        Assert.assertEquals("Куда", objTicketSearch.getToWhereText());
-        Assert.assertEquals("Туда", objTicketSearch.getDepartingDateText());
-        Assert.assertEquals("Обратно", objTicketSearch.getReturningDateText());
+        Assertions.assertEquals("Поиск билета", objTicketSearch.getTicketSearchBlockText());
+        Assertions.assertEquals("Откуда", objTicketSearch.getFromWhereText());
+        Assertions.assertEquals("Куда", objTicketSearch.getToWhereText());
+        Assertions.assertEquals("Туда", objTicketSearch.getDepartingDateText());
+        Assertions.assertEquals("Обратно", objTicketSearch.getReturningDateText());
 
         objTicketSearch.enterFromWhere("Москва");
         objTicketSearch.enterToWhere("Санкт-Петербург");
@@ -65,7 +65,7 @@ public class PobedaTest {
         objTicketSearch.clickSearchButton();
 
         String isRedOutline = objTicketSearch.checkRedOutline();
-        Assert.assertEquals("true", isRedOutline);
+        Assertions.assertEquals("true", isRedOutline);
     }
 
     @Test
@@ -77,9 +77,9 @@ public class PobedaTest {
         objHomePage.scrollToManageMyBooking();
         objHomePage.clickOnManageMyBooking();
 
-        Assert.assertEquals("Номер бронирования или билета", objBookingManagementPage.getTicketNumberText());
-        Assert.assertEquals("Фамилия клиента", objBookingManagementPage.getClientsLastNameText());
-        Assert.assertEquals("поиск", objBookingManagementPage.getSearchButtonText().toLowerCase());
+        Assertions.assertEquals("Номер бронирования или билета", objBookingManagementPage.getTicketNumberText());
+        Assertions.assertEquals("Фамилия клиента", objBookingManagementPage.getClientsLastNameText());
+        Assertions.assertEquals("поиск", objBookingManagementPage.getSearchButtonText().toLowerCase());
 
         objBookingManagementPage.enterTicketNumber("XXXXXX");
         objBookingManagementPage.enterClientsLastName("Qwerty");
@@ -91,10 +91,10 @@ public class PobedaTest {
         objViewOrderPage.clickOnFindOrderButton();
         //время для прохождения капчи если она появляется
         Thread.sleep(15000);
-        Assert.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
+        Assertions.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
     }
 
-    @After
+    @AfterEach
     public void closeBrowser() {
         driver.quit();
     }

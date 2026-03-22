@@ -1,9 +1,9 @@
 package ru.courses;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -11,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 public class UiPikabuTest {
     WebDriver driver;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         System.setProperty("webdriver.chrome.driver", "C:\\papka\\java_AT\\chromedriver-win64\\chromedriver.exe");
         driver = new ChromeDriver();
@@ -20,7 +20,7 @@ public class UiPikabuTest {
 
     @Test
     public void pikabuTest() throws InterruptedException {
-        Assert.assertEquals("Горячее – самые интересные и обсуждаемые посты | Пикабу", driver.getTitle());
+        Assertions.assertEquals("Горячее – самые интересные и обсуждаемые посты | Пикабу", driver.getTitle());
 
         driver.findElement(By.cssSelector("button[class=\"pkb-normal-btn header-right-menu__login-button\"]")).click();
 
@@ -39,10 +39,10 @@ public class UiPikabuTest {
         Thread.sleep(15000);
 
         String errorText = driver.findElement(By.cssSelector("div[class=\"popup__content\"] span[class=\"auth__error auth__error_top\"]")).getText();
-        Assert.assertEquals("Ошибка. Вы ввели неверные данные авторизации", errorText);
+        Assertions.assertEquals("Ошибка. Вы ввели неверные данные авторизации", errorText);
     }
 
-    @After
+    @AfterEach
     public void closeBrowser() {
         driver.quit();
     }

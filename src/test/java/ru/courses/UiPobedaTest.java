@@ -1,10 +1,10 @@
 package ru.courses;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -19,7 +19,7 @@ public class UiPobedaTest {
     WebDriverWait wait;
     WebElement flyToKaliningrad;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
         WebDriverManager.chromedriver().setup();
@@ -43,7 +43,7 @@ public class UiPobedaTest {
 
         flyToKaliningrad = driver.findElement(By.xpath("//div[contains(text(),'Полетели в Калининград')]"));
         waitForText(flyToKaliningrad, "Полетели в Калининград");
-        Assert.assertEquals("Полетели в Калининград!", flyToKaliningrad.getText());
+        Assertions.assertEquals("Полетели в Калининград!", flyToKaliningrad.getText());
 
         driver.findElement(By.xpath("//button[contains(text(), 'РУС')]")).click();
         driver.findElement(By.xpath("//div[contains(text(), 'English')]")).click();
@@ -53,12 +53,12 @@ public class UiPobedaTest {
         String ticketSearch = driver.findElement(By.xpath("//span[contains(text(), 'Ticket search') and not (@aria-hidden)]")).getText();
         String onlineCheckIn = driver.findElement(By.xpath("//span[contains(text(), 'Online check-in') and not (@aria-hidden)]")).getText();
         String manageMyBooking = driver.findElement(By.xpath("//span[contains(text(), 'Manage my booking') and not (@aria-hidden)]")).getText();
-        Assert.assertEquals("Ticket search", ticketSearch);
-        Assert.assertEquals("Online check-in", onlineCheckIn);
-        Assert.assertEquals("Manage my booking", manageMyBooking);
+        Assertions.assertEquals("Ticket search", ticketSearch);
+        Assertions.assertEquals("Online check-in", onlineCheckIn);
+        Assertions.assertEquals("Manage my booking", manageMyBooking);
     }
 
-    @After
+    @AfterEach
     public void closeBrowser() {
         driver.quit();
     }

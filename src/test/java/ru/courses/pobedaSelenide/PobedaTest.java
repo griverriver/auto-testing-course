@@ -1,9 +1,9 @@
 package ru.courses.pobedaSelenide;
 
 import com.codeborne.selenide.Configuration;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.switchTo;
@@ -14,7 +14,7 @@ public class PobedaTest {
     BookingManagementPage objBookingManagementPage;
     ViewOrderPage objViewOrderPage;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         Configuration.browser = "chrome";
         Configuration.browserSize = "1440x900";
@@ -29,33 +29,33 @@ public class PobedaTest {
 
     @Test
     public void openInfoPopUpTest() {
-        Assert.assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", objHomePage.getHomePageTitle());
+        Assertions.assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", objHomePage.getHomePageTitle());
 
-        Assert.assertTrue(objHomePage.isLogoDisplayed());
+        Assertions.assertTrue(objHomePage.isLogoDisplayed());
 
         objHomePage.openInfoPopUp();
 
-        Assert.assertEquals("Подготовка к полёту", objInfoPopUp.getReadyToFlyText());
-        Assert.assertEquals("Полезная информация", objInfoPopUp.getUsefulInfoText());
-        Assert.assertEquals("О компании", objInfoPopUp.getAboutCompanyText());
+        Assertions.assertEquals("Подготовка к полёту", objInfoPopUp.getReadyToFlyText());
+        Assertions.assertEquals("Полезная информация", objInfoPopUp.getUsefulInfoText());
+        Assertions.assertEquals("О компании", objInfoPopUp.getAboutCompanyText());
     }
 
     @Test
     public void ticketSearchTest() {
         objHomePage.closeTicketOneRubPopUp();
         objHomePage.scrollToTicketSearch();
-        Assert.assertEquals("Поиск билета", objHomePage.getTicketSearchBlockText());
-        Assert.assertEquals("Откуда", objHomePage.getFromWhereText());
-        Assert.assertEquals("Куда", objHomePage.getToWhereText());
-        Assert.assertEquals("Туда", objHomePage.getDepartingDateText());
-        Assert.assertEquals("Обратно", objHomePage.getReturningDateText());
+        Assertions.assertEquals("Поиск билета", objHomePage.getTicketSearchBlockText());
+        Assertions.assertEquals("Откуда", objHomePage.getFromWhereText());
+        Assertions.assertEquals("Куда", objHomePage.getToWhereText());
+        Assertions.assertEquals("Туда", objHomePage.getDepartingDateText());
+        Assertions.assertEquals("Обратно", objHomePage.getReturningDateText());
 
         objHomePage.enterFromWhere("Москва");
         objHomePage.enterToWhere("Санкт-Петербург");
 
         objHomePage.clickSearchButton();
 
-        Assert.assertEquals("true", objHomePage.checkRedOutline());
+        Assertions.assertEquals("true", objHomePage.checkRedOutline());
     }
 
     @Test
@@ -63,9 +63,9 @@ public class PobedaTest {
         objHomePage.scrollToManageMyBooking();
         objHomePage.clickOnManageMyBooking();
 
-        Assert.assertEquals("Номер бронирования или билета", objBookingManagementPage.getTicketNumberText());
-        Assert.assertEquals("Фамилия клиента", objBookingManagementPage.getClientsLastNameText());
-        Assert.assertEquals("поиск", objBookingManagementPage.getSearchButtonText().toLowerCase());
+        Assertions.assertEquals("Номер бронирования или билета", objBookingManagementPage.getTicketNumberText());
+        Assertions.assertEquals("Фамилия клиента", objBookingManagementPage.getClientsLastNameText());
+        Assertions.assertEquals("поиск", objBookingManagementPage.getSearchButtonText().toLowerCase());
 
         objBookingManagementPage.enterTicketNumber("XXXXXX");
         objBookingManagementPage.enterClientsLastName("Qwerty");
@@ -76,6 +76,6 @@ public class PobedaTest {
         objViewOrderPage.clickOnFindOrderButton();
         //время для прохождения капчи если она появляется
         Thread.sleep(15000);
-        Assert.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
+        Assertions.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
     }
 }
