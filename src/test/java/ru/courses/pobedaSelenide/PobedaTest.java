@@ -1,13 +1,21 @@
 package ru.courses.pobedaSelenide;
 
 import com.codeborne.selenide.Configuration;
+import io.qameta.allure.Description;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.switchTo;
 
+@Epic("Тестирование сайта авиакомпании Победа")
+@DisplayName("Тестирование сайта авиакомпании Победа")
+//с дескрипшеном не работает
+// @Description(value = "описание")
 public class PobedaTest {
     HomePage objHomePage;
     InfoPopUp objInfoPopUp;
@@ -28,6 +36,9 @@ public class PobedaTest {
     }
 
     @Test
+    @DisplayName("Вкладка 'Информация'")
+    @Feature("Вкладка 'Информация'")
+    @Description("Проверка содержимого вкладки 'Информация'")
     public void openInfoPopUpTest() {
         Assertions.assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", objHomePage.getHomePageTitle());
 
@@ -41,6 +52,9 @@ public class PobedaTest {
     }
 
     @Test
+    @DisplayName("Блок поиска билета")
+    @Feature("Блок поиска билета")
+    @Description("Проверка обязательности заполнения полей")
     public void ticketSearchTest() {
         objHomePage.closeTicketOneRubPopUp();
         objHomePage.scrollToTicketSearch();
@@ -59,6 +73,9 @@ public class PobedaTest {
     }
 
     @Test
+    @DisplayName("Страница 'Управление бронированием'")
+    @Feature("Страница 'Управление бронированием'")
+    @Description("Проверка поиска несуществующего бронирования")
     public void bookingManagementTest() throws InterruptedException {
         objHomePage.scrollToManageMyBooking();
         objHomePage.clickOnManageMyBooking();
@@ -77,5 +94,13 @@ public class PobedaTest {
         //время для прохождения капчи если она появляется
         Thread.sleep(15000);
         Assertions.assertTrue(objViewOrderPage.isErrorMessageDisplayed());
+    }
+
+    @Test
+    @DisplayName("Главная страница - ТЕСТ С ОШИБКОЙ")
+    @Feature("Главная страница - ТЕСТ С ОШИБКОЙ")
+    @Description("ТЕСТ С ОШИБКОЙ")
+    public void failedTest(){
+        Assertions.assertEquals("Некорректный тайтл", objHomePage.getHomePageTitle());
     }
 }
